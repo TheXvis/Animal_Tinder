@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+//import useLoadingState from './Loading';
 
 const Card = () => {
   const [imageUrl, setImageUrl] = useState('');
@@ -6,6 +7,8 @@ const Card = () => {
 
   const [acceptedDogs, setAcceptedDogs] = useState([]);
   const [rejectedDogs, setRejectedDogs] = useState([]);
+
+  const [isFetching, setIsFetching] = useState(false);
 
 
 
@@ -20,6 +23,9 @@ const Card = () => {
   };
 
   const fetchRandomImage = () => {
+
+  
+    setIsFetching(true);
 
     const uniqueName = nameRandomImage();
     
@@ -42,6 +48,9 @@ const Card = () => {
       .catch((error) => {
         console.error('Error al cargar la imagen:', error);
         fetchRandomImage();
+      })
+      .finally(() =>{
+        setIsFetching(false);
       });
   };
 
@@ -50,10 +59,36 @@ const Card = () => {
     fetchRandomImage();
   }
 
+  const eliminarAceptado = (index) =>{
+    const actualizarAceptados = [...acceptedDogs];
+    actualizarAceptados.splice(index, 1);
+    setAcceptedDogs(actualizarAceptados);
+  }
+
+
   const rechazados = () =>{
     setRejectedDogs([...rejectedDogs, {name: imageName, imageUrl}]);
     fetchRandomImage();
   }
+
+  const eliminarRechazado = (index) =>{
+    const actualizarRechazados = [...rejectedDogs];
+    actualizarRechazados.splice(index, 1);
+    setRejectedDogs(actualizarRechazados);
+  }
+
+  const cambiarEstado = (index, isAccepted) => {
+    if (isAccepted) {
+      const dogToMove = acceptedDogs[index];
+      setAcceptedDogs(acceptedDogs.filter((_, i) => i !== index)); // Elimina el perro de la lista de aceptados
+      setRejectedDogs([...rejectedDogs, dogToMove]); // Agrega el perro a la lista de rechazados
+    } else {
+      const dogToMove = rejectedDogs[index];
+      setRejectedDogs(rejectedDogs.filter((_, i) => i !== index)); // Elimina el perro de la lista de rechazados
+      setAcceptedDogs([...acceptedDogs, dogToMove]); // Agrega el perro a la lista de aceptados
+    }
+  };
+  
 
   useEffect(() => {
     fetchRandomImage();
@@ -66,8 +101,8 @@ const Card = () => {
       {imageUrl && <img src={imageUrl} alt="Random Dog" />}
 
       <br/>
-      <button className='boton' onClick={aceptados}>Aceptar</button>
-      <button className='boton2' onClick={rechazados}>Rechazar</button>
+      <button className='boton' onClick={aceptados} disabled={isFetching}>Aceptar</button>
+      <button className='boton2' onClick={rechazados} disabled={ isFetching}>Rechazar</button>
 
       <div className='aceptados'>
       <h2>Perros aceptados</h2>
@@ -76,6 +111,8 @@ const Card = () => {
           <li key={index}>
             <p>Nombre: {dog.name}</p>
             <img className='imagenlista' src={dog.imageUrl} alt="Perros aceptados"/>
+            <button className='boton'  onClick={() =>cambiarEstado(index, true)} disabled={isFetching}>Cambiar</button>
+            <button className='boton2' onClick={() =>eliminarAceptado(index)} disabled={ isFetching}>Eliminar</button>
           </li>
         ))}
       </ul>
@@ -88,6 +125,8 @@ const Card = () => {
           <li key={index}>
             <p>Nombre: {dog.name}</p>
             <img className='imagenlista' src={dog.imageUrl} alt="Perros rechazados"/>
+            <button className='boton'  onClick={() =>cambiarEstado(index, false)} disabled={isFetching}>Cambiar</button>
+            <button className='boton2' onClick={() =>eliminarRechazado(index)} disabled={ isFetching}>Eliminar</button>
           </li>
         ))}
       </ul>
