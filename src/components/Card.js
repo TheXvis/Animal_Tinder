@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-//import useLoadingState from './Loading';
+import { loremIpsum } from 'lorem-ipsum';
 
 const Card = () => {
   const [imageUrl, setImageUrl] = useState('');
@@ -10,7 +10,20 @@ const Card = () => {
 
   const [isFetching, setIsFetching] = useState(false);
 
+  const [mostrarAceptados, setMostrarAceptados] = useState(true);
+  const [mostrarRechazados, setMostrarRechazados] = useState(true);
 
+  function generarDescripcion(){
+    const descripcion = loremIpsum({
+      count: 1, 
+      units: 'paragraphs',
+      format: 'html',
+      paragraphLowerBound: 1, 
+      paragraphUpperBound: 1, 
+    })
+
+    return descripcion;
+  }
 
   const nombres = ['Fido', 'Luna', 'Rocky', 'Max', 'Bella', 'Charlie', 'Lucy', 'Duke', 'Daisy','Reyna', 'Fiodor', 
   'Dopa', 'Canela', 'Soldado', 'Cazador', 'Sol', 'Rey', 'Trueno','Camaron', 'Pequeño', 'Bestia', 'Manchitas', 'Salao', 
@@ -24,7 +37,6 @@ const Card = () => {
 
   const fetchRandomImage = () => {
 
-  
     setIsFetching(true);
 
     const uniqueName = nameRandomImage();
@@ -55,7 +67,8 @@ const Card = () => {
   };
 
   const aceptados = () =>{
-    setAcceptedDogs([...acceptedDogs, {name: imageName, imageUrl}]);
+    const descripcion = generarDescripcion();
+    setAcceptedDogs([...acceptedDogs, {name: imageName, imageUrl, descripcion}]);
     fetchRandomImage();
   }
 
@@ -67,7 +80,8 @@ const Card = () => {
 
 
   const rechazados = () =>{
-    setRejectedDogs([...rejectedDogs, {name: imageName, imageUrl}]);
+    const descripcion = generarDescripcion();
+    setRejectedDogs([...rejectedDogs, {name: imageName, imageUrl,descripcion}]);
     fetchRandomImage();
   }
 
@@ -88,6 +102,14 @@ const Card = () => {
       setAcceptedDogs([...acceptedDogs, dogToMove]); // Agrega el perro a la lista de aceptados
     }
   };
+
+  const toggleList = (listName) => {
+  if (listName === 'aceptados') {
+    setMostrarAceptados(!mostrarAceptados);
+  } else if (listName === 'rechazados') {
+    setMostrarRechazados(!mostrarRechazados);
+  }
+  };
   
 
   useEffect(() => {
@@ -106,13 +128,18 @@ const Card = () => {
 
       <div className='aceptados'>
       <h2>Perros aceptados</h2>
+      <button onClick={() => toggleList('aceptados')}>{mostrarAceptados ? 'Ocultar Aceptados' : 'Mostrar Aceptados'}</button>
       <ul>
-        {acceptedDogs.map((dog, index) =>(
+        {mostrarAceptados && acceptedDogs.map((dog, index) =>(
           <li key={index}>
             <p>Nombre: {dog.name}</p>
             <img className='imagenlista' src={dog.imageUrl} alt="Perros aceptados"/>
             <button className='boton'  onClick={() =>cambiarEstado(index, true)} disabled={isFetching}>Cambiar</button>
             <button className='boton2' onClick={() =>eliminarAceptado(index)} disabled={ isFetching}>Eliminar</button>
+            <br/>
+            <p>Descripcion: {dog.descripcion}</p>
+            <br/>
+            <br/>
           </li>
         ))}
       </ul>
@@ -120,13 +147,18 @@ const Card = () => {
 
       <div className='rechazados'>
       <h2>Perros rechazados</h2>
+      <button onClick={() => toggleList('rechazados')}>{mostrarRechazados ? 'Ocultar Aceptados' : 'Mostrar Aceptados'}</button>
       <ul>
-        {rejectedDogs.map((dog, index) =>(
+        {mostrarRechazados && rejectedDogs.map((dog, index) =>(
           <li key={index}>
             <p>Nombre: {dog.name}</p>
             <img className='imagenlista' src={dog.imageUrl} alt="Perros rechazados"/>
             <button className='boton'  onClick={() =>cambiarEstado(index, false)} disabled={isFetching}>Cambiar</button>
             <button className='boton2' onClick={() =>eliminarRechazado(index)} disabled={ isFetching}>Eliminar</button>
+            <br/>
+            <p>Descripcion: {dog.descripcion}</p>
+            <br/>
+            <br/>
           </li>
         ))}
       </ul>
