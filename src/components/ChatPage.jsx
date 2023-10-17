@@ -7,7 +7,7 @@ const ChatPage = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const initialMsg = `¡Hola! Soy ${dogName} 🐾 ¡Porfavor Adoptame!`;
+    const initialMsg = `Hola!! Soy ${dogName}, guau 🐾 ¡Porfavor Adoptame!`;
     setMessages([{ text: initialMsg, sender: 'dog' }]);
   }, [dogName]);
 
@@ -40,11 +40,12 @@ const ChatPage = () => {
             </div>
           ))}
         </div>
-        <div className="chat-input">
+        <div >
           <input
             type="text"
             placeholder="Escribe un mensaje..."
             value={message}
+            style={{ width: '500px', height: '36px' }}
             onChange={(e) => setMessage(e.target.value)}
           />
           <button className='boton' onClick={handleSendMessage}>Enviar</button>

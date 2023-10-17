@@ -11,7 +11,7 @@ function App() {
     <Router>
       <Navbar /> 
       <div className="content-container">
-        <h1>Animal Tinder</h1>
+        <h1 >Animal Tinder</h1>
         <Routes>
           <Route path="/" element={<Card  />} />
           <Route path="/chat/:dogName" element={<ChatPage />} />
