@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { loremIpsum } from 'lorem-ipsum';
+import { Link } from 'react-router-dom';
 
 const Card = () => {
   const [imageUrl, setImageUrl] = useState('');
@@ -119,6 +120,7 @@ const Card = () => {
 
   return (
     <div>
+      
       <p>Nombre: {imageName}</p>
       {imageUrl && <img src={imageUrl} alt="Random Dog" />}
 
@@ -136,6 +138,9 @@ const Card = () => {
             <img className='imagenlista' src={dog.imageUrl} alt="Perros aceptados"/>
             <button className='boton'  onClick={() =>cambiarEstado(index, true)} disabled={isFetching}>Cambiar</button>
             <button className='boton2' onClick={() =>eliminarAceptado(index)} disabled={ isFetching}>Eliminar</button>
+            <Link to={`/chat/${dog.name}`}>
+  <button className="boton3">Chatear</button>
+</Link>
             <br/>
             <p>Descripcion: {dog.descripcion}</p>
             <br/>
