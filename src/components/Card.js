@@ -130,7 +130,7 @@ const Card = () => {
 
       <div className='aceptados'>
       <h2>Perros aceptados</h2>
-      <button onClick={() => toggleList('aceptados')}>{mostrarAceptados ? 'Ocultar Aceptados' : 'Mostrar Aceptados'}</button>
+      <button className='mboton' onClick={() => toggleList('aceptados')}>{mostrarAceptados ? 'Ocultar Aceptados' : 'Mostrar Aceptados'}</button>
       <ul>
         {mostrarAceptados && acceptedDogs.map((dog, index) =>(
           <li key={index}>
@@ -152,7 +152,7 @@ const Card = () => {
 
       <div className='rechazados'>
       <h2>Perros rechazados</h2>
-      <button onClick={() => toggleList('rechazados')}>{mostrarRechazados ? 'Ocultar Aceptados' : 'Mostrar Aceptados'}</button>
+      <button className='mboton' onClick={() => toggleList('rechazados')}>{mostrarRechazados ? 'Ocultar rechazados' : 'Mostrar rechazados'}</button>
       <ul>
         {mostrarRechazados && rejectedDogs.map((dog, index) =>(
           <li key={index}>

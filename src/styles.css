@@ -23,6 +23,15 @@ img {
     max-width: 600px;
     height: 600px;
 }
+.mboton {
+  padding: 4px 10px;
+    background-color: #536f54;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 4px;
+
+}
 
 .boton {
     padding: 10px 20px;
@@ -142,4 +151,24 @@ img {
     z-index: 100;
   
   
+}
+
+.chat-input{
+
+  height: 50px;
+}
+
+@font-face {
+  font-family: 'Ftitle'; 
+  src: url('/Fonts/DeliciousHandrawn-Regular.ttf') format('truetype'); 
+}
+
+h1 {
+  font-family: 'Ftitle', sans-serif;
+  font-size: 40px;
+}
+
+h2 {
+  font-family: 'Ftitle', sans-serif;
+  font-size: 30px;
 }
